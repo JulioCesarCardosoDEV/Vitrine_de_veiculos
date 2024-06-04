@@ -2,41 +2,86 @@ const formulario = document.querySelector("form");
 const inome = document.querySelector(".nome");
 const iemail = document.querySelector(".email");
 const isenha = document.querySelector(".senha");
-
-
-
-function limpar(){
-    inome.value = "";
-    iemail.value = "";
-    isenha.value = ""
-}
+const irepetirSenha = document.querySelector(".repetir-senha")
 
 formulario.addEventListener('submit', e =>{
     handleSubmit(e);
-    limpar();
 });
 
 function handleSubmit(e){
     e.preventDefault();
     const camposValidos = this.camposSaoValidos();
     const senhasValidas = this.senhasSaoValidas();
+    const nomesValidos = this.nomesSaoValidos();
+    const emailsValidos = this.emailsSaoValidos();
 
-    if(camposValidos && senhasValidas) {
+    if(camposValidos && senhasValidas && nomesValidos && emailsValidos) {
+      cadastrar();
+      limpar();
       alert('Formulário enviado.');
-      this.formulario.submit();
     }
 }
+
+function cadastrar(){
+  fetch("http://localhost:8080/users",
+      {
+          headers: {
+              'Accept':'application/json',
+              'Content-Type':'application/json'
+          },
+          method: "POST",
+          body:JSON.stringify({
+              username:inome.value,
+              email:iemail.value,
+              senha:isenha.value,
+          })
+      }).then(function(res){console.log(res)})
+      .catch(function (res) { console.log(res) })
+};
 
 function senhasSaoValidas() {
     let valid = true;
 
-    if(isenha.length < 6 || isenha.length > 12) {
-      valid = false;
-      this.criaErro(senha, 'Senha precisa estar entre 6 e 12 caracteres.');
+    if(isenha.value.length < 8) {
+      valid = false; 
+      this.criaErro(isenha, 'A senha precisa ter 8 caracteres no mínimo');
+    }
+
+    if(irepetirSenha.value.length < 8) {
+      valid = false; 
+      this.criaErro(irepetirSenha, 'A senha precisa ter 8 caracteres no mínimo');
+    }
+
+    if(isenha.value != irepetirSenha.value){
+      valid = false; 
+      this.criaErro(isenha, 'As senhas são diferentes');
+      this.criaErro(irepetirSenha, 'As senhas são diferentes');
     }
 
     return valid;
   }
+
+function nomesSaoValidos() {
+    let valid = true;
+
+    if(inome.value.length < 3) {
+      valid = false; 
+      return this.criaErro(inome, 'O nome precisa ter pelo menos 3 letras');
+    }
+
+    return valid;
+}
+
+function emailsSaoValidos() {
+  let valid = true;
+
+  if (!iemail.value.includes('@') || !iemail.value.includes('.')) {
+    valid = false; 
+    return this.criaErro(iemail, 'Email inválido');
+  }
+
+  return valid;
+}
 
 function camposSaoValidos() {
     let valid = true;
@@ -52,32 +97,6 @@ function camposSaoValidos() {
         this.criaErro(campo, `Campo "${label}" não pode estar em branco.`);
         valid = false;
       }
-
-      if(campo.classList.contains('cpf')) {
-        if(!this.validaCPF(campo)) valid = false;
-      }
-
-      if(campo.classList.contains('usuario')) {
-        if(!this.validaUsuario(campo)) valid = false;
-      }
-
-    }
-
-    return valid;
-  }
-
-  function validaUsuario(campo) {
-    const usuario = campo.value;
-    let valid = true;
-
-    if(usuario.length < 3 || usuario.length > 12) {
-      this.criaErro(campo, 'Usuário precisa ter entre 3 e 12 caracteres.');
-      valid = false;
-    }
-
-    if(!usuario.match(/^[a-zA-Z0-9]+$/g)) {
-      this.criaErro(campo, 'Nome de usuário precisar conter apenas letras e/ou números.');
-      valid = false;
     }
 
     return valid;
@@ -89,5 +108,12 @@ function camposSaoValidos() {
     div.classList.add('error-text');
     campo.insertAdjacentElement('afterend', div);
   }
+
+  function limpar(){
+    inome.value = "";
+    iemail.value = "";
+    isenha.value = "",
+    irepetirSenha.value = ""
+}
 
 
