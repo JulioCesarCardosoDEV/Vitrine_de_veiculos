@@ -2,6 +2,7 @@ package com.juliocesar.webpage.controller;
 
 import com.juliocesar.webpage.dto.UserDTO;
 import com.juliocesar.webpage.entities.User;
+import com.juliocesar.webpage.security.Token;
 import com.juliocesar.webpage.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,13 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
-    @RequestMapping(path = "/login/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Void> validarSenha(@PathVariable Long id, @Valid @RequestBody UserDTO objDTO){
-        User obj = userService.fromDTO(objDTO);
-        boolean valida = userService.validarSenha(obj, id);
-        if(!valida){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    @RequestMapping(path = "/login", method = RequestMethod.POST)
+    public ResponseEntity<Token> logar(@Valid @RequestBody UserDTO objDTO) {
+        Token token = userService.gerarToken(objDTO);
+        if (token != null) {
+            return ResponseEntity.ok(token);
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(403).build();
     }
 
     @RequestMapping(method= RequestMethod.GET)

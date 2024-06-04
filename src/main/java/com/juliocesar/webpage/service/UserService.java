@@ -3,27 +3,39 @@ package com.juliocesar.webpage.service;
 import com.juliocesar.webpage.dto.UserDTO;
 import com.juliocesar.webpage.entities.User;
 import com.juliocesar.webpage.repository.UserRepository;
+import com.juliocesar.webpage.security.Token;
+import com.juliocesar.webpage.security.util.TokenUtil;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserService {
+public class UserService{
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
+
     public List<User> findAll(){
+        logger.info("Usuario: " + getLogado() + " Listando Usuários");
         return userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     public User insert(User obj){
         String encoder = passwordEncoder.encode(obj.getSenha());
         obj.setSenha(encoder);
+        logger.info("Usuario: " + getLogado() + " Criando Usuário");
         return userRepository.save(obj);
     }
 
@@ -32,18 +44,32 @@ public class UserService {
         obj.setSenha(encoder);
         User newObj = userRepository.findById(obj.getId()).get();
         updateUser(newObj, obj);
+        logger.info("Usuario: " + getLogado() + " Editando Usuário " + obj.getUsername());
         return userRepository.save(newObj);
     }
 
     public void delete(Long id){
-        User obj = userRepository.findById(id).get();
+        logger.info("Usuario: " + getLogado() + " Excluindo Usuário");
         userRepository.deleteById(id);
     }
 
-    public Boolean validarSenha(User obj, Long id){
-        String senha = userRepository.getById(id).getSenha();
-        boolean valida = passwordEncoder.matches(obj.getSenha(), senha);
-        return valida;
+    public Token gerarToken(@Valid UserDTO usuario) {
+        User user = userRepository.findByUsernameOrEmail(usuario.getUsername(), usuario.getEmail());
+        if (user != null) {
+            boolean valid = passwordEncoder.matches(usuario.getSenha(), user.getSenha());
+            if (valid) {
+                return new Token(TokenUtil.createToken(user));
+            }
+        }
+        return null;
+    }
+
+    private String getLogado(){
+        Authentication userLogado = SecurityContextHolder.getContext().getAuthentication();
+        if(!(userLogado instanceof AnonymousAuthenticationToken)){
+            return userLogado.getName();
+        }
+        return null;
     }
 
     private void updateUser(User newObj, User obj) {
