@@ -1,6 +1,7 @@
 package com.juliocesar.webpage.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@Entity(name = "veiculos")
+@Entity(name="veiculos")
 @Table(name="veiculos")
 public class Vehicle {
     @Id
@@ -16,26 +17,30 @@ public class Vehicle {
     @Column(name = "id")
     private Long id;
 
+    @NotBlank
     @Column(name = "nome")
     private String nome;
 
+    @NotBlank
     @Column(name = "marca")
     private String marca;
 
+    @NotBlank
     @Column(name = "modelo")
     private String modelo;
 
-    @Column(name = "preco")
-    private Double price;
+    @Column(name = "price")
+    private double price;
 
-    @Column(name = "imagem")
+    @NotBlank
+    @Column(name = "image")
     private String image;
 
     public Vehicle(){
 
     }
 
-    public Vehicle(Long id, String nome, String marca, String modelo, Double price, String image) {
+    public Vehicle(Long id, String nome, String marca, String modelo, double price, String image) {
         this.id = id;
         this.nome = nome;
         this.marca = marca;

@@ -1,6 +1,7 @@
 package com.juliocesar.webpage.controller;
 
 import com.juliocesar.webpage.dto.UserDTO;
+import com.juliocesar.webpage.dto.UserLoginDTO;
 import com.juliocesar.webpage.entities.User;
 import com.juliocesar.webpage.security.Token;
 import com.juliocesar.webpage.service.UserService;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Token> logar(@Valid @RequestBody UserDTO objDTO) {
+    public ResponseEntity<Token> logar(@Valid @RequestBody UserLoginDTO objDTO) {
         Token token = userService.gerarToken(objDTO);
         if (token != null) {
             return ResponseEntity.ok(token);

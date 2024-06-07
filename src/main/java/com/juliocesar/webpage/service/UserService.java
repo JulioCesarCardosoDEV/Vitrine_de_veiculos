@@ -1,6 +1,7 @@
 package com.juliocesar.webpage.service;
 
 import com.juliocesar.webpage.dto.UserDTO;
+import com.juliocesar.webpage.dto.UserLoginDTO;
 import com.juliocesar.webpage.entities.User;
 import com.juliocesar.webpage.repository.UserRepository;
 import com.juliocesar.webpage.security.Token;
@@ -53,8 +54,8 @@ public class UserService{
         userRepository.deleteById(id);
     }
 
-    public Token gerarToken(@Valid UserDTO usuario) {
-        User user = userRepository.findByUsernameOrEmail(usuario.getUsername(), usuario.getEmail());
+    public Token gerarToken(@Valid UserLoginDTO usuario) {
+        User user = userRepository.findByEmail(usuario.getEmail());
         if (user != null) {
             boolean valid = passwordEncoder.matches(usuario.getSenha(), user.getSenha());
             if (valid) {

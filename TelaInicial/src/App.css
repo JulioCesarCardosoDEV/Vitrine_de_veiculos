@@ -1,0 +1,43 @@
+.container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+}
+
+.card-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+h1 {
+    color: white;
+    font-size: 3.2em;
+    line-height: 1.1;
+    margin-top: 20px;
+  }
+
+.container button{
+    background-color: rgb(17, 86, 102);
+    color: white;
+    font-weight: bold;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    transition: all 0.1s linear 0.1s;
+    height: 50px;
+    width: 50px;
+}
+
+.container button:hover{
+    box-shadow: rgb(100, 100, 111, 0.2) 0px 7px 7px 0px;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .card-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
