@@ -2,11 +2,6 @@ HELP.md
 .metadata/
 bin/
 target/
-mvnw
-mvnw.cmd
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
 ### STS ###
 .apt_generated
