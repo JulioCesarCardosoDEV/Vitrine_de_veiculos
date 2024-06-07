@@ -41,7 +41,7 @@ Depois é só atualizar o Maven.
 É preciso também abrir o banco de dados PostegreSQl em sua máquina, e criar o database "website_veiculos".
 
 Depois de criar o database, 
-é preciso fazer a conexão com o banco de dados da maneira correta, no arquivo application-dev.properties na pasta de resources, colocando o username do seu banco e a sua senha do postgreSQL.
+é preciso fazer a conexão com o banco de dados da maneira correta, no arquivo application-dev.properties na pasta de resources, coloque o username do seu banco e a sua senha do postgreSQL.
 
 <img width="600px" src="./.github/postgresql.png">
 
