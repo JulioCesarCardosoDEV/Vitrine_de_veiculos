@@ -10,7 +10,7 @@ Aplicação web simples de um catálogo de veículos.
 
 <br>
 <br>
-A aplicação foi desenvolvida usando **Java, SpringBoot, PostgreSQL, HTML, CSS, JavaScript, React, Typescript e React Query**.
+A aplicação foi desenvolvida usando **Java, SpringBoot, PostgreSQL, HTML, CSS, JavaScript, React, Typescript e React Query**
 
 ## 💻 Requisitos
 
