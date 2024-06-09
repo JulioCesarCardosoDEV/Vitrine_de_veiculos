@@ -3,9 +3,9 @@
 Aplicação web simples de um catálogo de veículos. 
 
 <h1 align="center">
-    <img src="./.github/telaDeLogin.png" width="600"/>
-    <img src="./.github/TelaInicial.png" width="600"/>
-    <img src="./.github/cadastroDeVeiculo.png" width="600"/>
+    <img src="./.github/telaDeLogin.png" width="700"/>
+    <img src="./.github/TelaInicial.png" width="700"/>
+    <img src="./.github/cadastroDeVeiculo.png" width="700"/>
 </h1>
 
 <br>
